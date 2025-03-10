@@ -37,7 +37,16 @@
             <span class="icon">
                 <i class="fab fa-github"></i>
             </span>
-            <span>Code (TBD)</span>
+            <span>Code (Coming soon)</span>
+            </a>
+        </span>
+        <span class="link-block">
+          <a href=""
+              class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="far fa-images"></i>
+            </span>
+            <span>Data</span>
             </a>
         </span>
       </div>
@@ -49,18 +58,19 @@
 
 <div class="content">
   <h2 style="text-align:center;"><strong>Abstract</strong></h2>
-  <p>This paper aims to bring fine-grained expression control to identity-preserving portrait generation. Existing methods tend to synthesize portraits with either neutral or stereotypical expressions. Even when supplemented with control signals like facial landmarks, these models struggle to generate accurate and vivid expressions following user instructions.
-    To solve this, we introduce <b>EmojiDiff</b>, an end-to-end solution to facilitate simultaneous dual control of fine expression and identity. Unlike the conventional methods using coarse control signals, our method directly accepts RGB expression images as input templates to provide extremely accurate and fine-grained expression control in the diffusion process.
-    As its core, an innovative decoupled scheme is proposed to disentangle expression features in the expression template from other extraneous information, such as identity, skin, and style. On one hand, we introduce <b>I</b>D-irrelevant <b>D</b>ata <b>I</b>teration (IDI) to synthesize extremely high-quality cross-identity expression pairs for decoupled training,  which is the crucial foundation to filter out identity information hidden in the expressions.
-    On the other hand, we meticulously investigate network layer function and select expression-sensitive layers to inject reference expression features, effectively preventing style leakage from expression signals. 
-    To further improve identity fidelity, we propose a novel fine-tuning strategy named <b>I</b>D-enhanced <b>C</b>ontrast <b>A</b>lignment (ICA), which eliminates the negative impact of expression control on original identity preservation.
-    Experimental results demonstrate that our method remarkably outperforms counterparts, achieves precise expression control with highly maintained identity, and generalizes well to various diffusion models.</p>
+  <p>
+
+    This paper aims to bring fine-grained expression control while maintaining high-fidelity identity in portrait generation. This is challenging due to the mutual interference between expression and identity. On one hand, fine expression control signals inevitably introduce appearance-related semantics (e.g., facial contours, and ratio), which impact the identity of the generated portrait. On the other hand, even coarse-grained expression control can cause facial changes that compromise identity, since they all act on the face. These limitations remain unaddressed by previous generation methods, which primarily rely on coarse control signals or two-stage inference that integrates portrait animation. Here, we introduce <b>EmojiDiff</b>, the first end-to-end solution that enables simultaneous control of extremely detailed expression (RGB-level) and high-fidelity identity in portrait generation. To address the above challenges, EmojiDiff adopts a two-stage scheme involving decoupled training and fine-tuning. For decoupled training, we innovate <b>I</b>D-irrelevant <b>D</b>ata <b>I</b>teration (IDI) to synthesize cross-identity expression pairs by separately manipulating the expression and identity, achieving a stable and high-quality data generation. Training the model with this data, we effectively disentangle fine expression features in the expression template from other extraneous information (\textit{e.g.}, identity, skin). Subsequently, we present <b>I</b>D-enhanced <b>C</b>ontrast <b>A</b>lignment (ICA) for further fine-tuning. ICA achieves rapid reconstruction and joint supervision of identity and expression information, thus aligning identity representations of images with and without expression control. Experimental results demonstrate that our method remarkably outperforms counterparts, achieves precise expression control with highly maintained identity, and generalizes well to various diffusion models.
+
+  </p>
   </div>
 
 
 <div class="content">
     <h2 style="text-align:center;"><strong>Method</strong></h2>
-    <p> To integrate expression control into diffusion models, EmojiDiff aims to train the model using cross-identity triplet data and mitigate the negative impact on the original structure through contrastive alignment. The method involves four stages. First, the fundamental expression controller (i.e., Base E-Adapter) is trained with same-identity triplet data. Next, the trained Base E-Adapter and FaceFusion are utilized to alter the identity of portraits while maintaining consistent expressions, thereby creating cross-identity expression pairs. Subsequently, the Refined E-Adapter is trained using newly synthesized data, facilitating dual control of identity and expression without ID leakage. Finally, the Refined E-Adapter is fine-tuned by introducing expression and identity loss, further minimizing its negative impact on identity.</p>
+    <p>
+      To integrate RGB-driven expression control into diffusion models, we aim to synthesize cross-identity data for the model's decoupled training, and mitigate the negative impact on the original identity through contrastive alignment fine-tuning. Before decoupled training, the fundamental expression controller (i.e., Base E-Adapter) is trained with same-identity triplet data. Next, the trained Base E-Adapter and FaceFusion are utilized to alter the identity of portraits while maintaining consistent expressions, thereby creating cross-identity expression pairs. Subsequently, the Refined E-Adapter uses newly synthesized data for disentangled training, facilitating dual control of identity and expression without ID leakage. Finally, the Refined E-Adapter is fine-tuned by expression and identity loss based on ANI.
+    </p>
     <br>
     <img class="summary-img" src="assets/pipeline.svg" style="width:90%;"> <br>
   </div>
